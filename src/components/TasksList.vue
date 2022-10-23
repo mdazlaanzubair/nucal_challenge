@@ -104,42 +104,12 @@
 </template>
 
 <script>
+// importing mapGetter from VUEX in order to use getters 
+import { mapGetters } from "vuex";
+
 export default {
-  computed: {
-    // loading tasks from virtual store using $VUEX
-    tasksList() {
-      // holding fetched tasks data in sort variable
-      let sortedTasks = this.$store.state.tasks;
-
-      // performing sort on whole array of objects
-      sortedTasks.sort((task_a, task_b) => {
-        // performing sort on nest tasks of first task element i.e. "task_a"
-        if (task_a.subTasks.length > 0) {
-          task_a.subTasks = task_a.subTasks.sort((subTask_a, subTask_b) => {
-            if (subTask_a.level < subTask_b.level) return 1;
-            if (subTask_a.level > subTask_b.level) return -1;
-            else return 0;
-          });
-        }
-        // performing sort on nest tasks of second task element i.e. "task_b"
-        if (task_b.subTasks.length > 0) {
-          task_b.subTasks = task_b.subTasks.sort((subTask_a, subTask_b) => {
-            if (subTask_a.level > subTask_b.level) return 1;
-            if (subTask_a.level < subTask_b.level) return -1;
-            else return 0;
-          });
-        }
-
-        // performing sort on main tasks elements
-        if (task_a.level > task_b.level) return 1;
-        if (task_a.level < task_b.level) return -1;
-        else return 0;
-      });
-
-      // returning tasksList after sort
-      return sortedTasks;
-    },
-  },
+  // using getter
+  computed: mapGetters(["tasksList"])
 };
 </script>
 
