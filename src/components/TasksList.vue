@@ -4,18 +4,11 @@
       <!-- ---------------- -->
       <!-- tasks section -->
       <!-- ---------------- -->
-      <figure
-        class="note note-secondary bg-light shadow-4"
+      <div
+        class="note note-light shadow my-5"
         v-for="task in tasksList"
         :key="task.id"
       >
-        <!-- task title -->
-        <blockquote class="blockquote">
-          <p>
-            {{ task.name }}
-          </p>
-        </blockquote>
-
         <!-- task criticality -->
         <p>
           <span v-if="task.level == 1" class="badge badge-danger text-danger"
@@ -32,42 +25,41 @@
           >
         </p>
 
-        <!-- task action center -->
-        <div class="action-center d-flex justify-content-between">
-          <button
-            v-if="task.subTasks.length < 4"
-            class="btn btn-sm btn-info rounded-6"
-            title="Add Sub-tasks"
-          >
-            <i class="fas fa-plus me-2"></i>
-            Add sub-tasks
-          </button>
-          <button
-            v-if="task.subTasks.length == 0"
-            class="btn btn-sm btn-danger rounded-6"
-            title="Delete Task"
-          >
-            <i class="far fa-trash-alt me-2"></i> Delete Task
-          </button>
+        <!-- task body section -->
+        <div class="d-flex align-items-center justify-content-between">
+          <!-- task title -->
+          <h6>{{ task.name }}</h6>
+
+          <!-- task action center -->
+          <div class="d-flex justify-content-between">
+            <button
+              v-if="task.subTasks.length < 4"
+              class="btn btn-sm btn-info btn-floating mx-2"
+              title="Add Sub-tasks"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+            <button
+              v-if="task.subTasks.length == 0"
+              class="btn btn-sm btn-danger btn-floating mx-2"
+              title="Delete Task"
+            >
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </div>
         </div>
 
         <!-- ---------------- -->
         <!-- subtasks section -->
         <!-- ---------------- -->
-        <figure
-          class="note note-info my-3"
+        <div
+          v-show="task.subTasks.length > 0"
+          class="ms-2 note note-secondary bg-light my-4"
           v-for="subTask in task.subTasks"
           :key="subTask.id"
         >
-          <!-- sub-task title -->
-          <blockquote class="blockquote">
-            <p>
-              {{ subTask.name }}
-            </p>
-          </blockquote>
-
           <!-- sub-task criticality -->
-          <p>
+          <p class="mb-1 small">
             <span
               v-if="subTask.level == 1"
               class="badge badge-danger text-danger"
@@ -88,28 +80,32 @@
             >
           </p>
 
-          <!-- sub-task action center -->
-          <div class="action-center d-flex justify-content-end">
+          <!-- sub-task body section -->
+          <div class="d-flex justify-content-between">
+            <!-- sub-task title -->
+            <h6>{{ subTask.name }}</h6>
+
+            <!-- task action center -->
             <button
-              class="btn btn-sm btn-outline-dark btn-floating mt-0"
+              class="btn btn-sm btn-link text-dark btn-floating mx-2"
               title="Delete Task"
             >
               <i class="far fa-trash-alt"></i>
             </button>
           </div>
-        </figure>
-      </figure>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-// importing mapGetter from VUEX in order to use getters 
+// importing mapGetter from VUEX in order to use getters
 import { mapGetters } from "vuex";
 
 export default {
   // using getter
-  computed: mapGetters(["tasksList"])
+  computed: mapGetters(["tasksList"]),
 };
 </script>
 
