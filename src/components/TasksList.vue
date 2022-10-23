@@ -1,10 +1,14 @@
 <template>
-  <div class="row">
+  <div class="row my-3">
     <div class="col-md">
       <!-- ---------------- -->
       <!-- tasks section -->
       <!-- ---------------- -->
-      <figure class="note note-primary shadow-sm" v-for="task in tasksList" :key="task.id">
+      <figure
+        class="note note-secondary bg-light shadow-4"
+        v-for="task in tasksList"
+        :key="task.id"
+      >
         <!-- task title -->
         <blockquote class="blockquote">
           <p>
@@ -29,17 +33,18 @@
         </p>
 
         <!-- task action center -->
-        <div class="action-center d-flex justify-content-between my-3">
+        <div class="action-center d-flex justify-content-between">
           <button
             v-if="task.subTasks.length < 4"
-            class="btn btn-sm btn-info btn-floating rounded-3"
+            class="btn btn-sm btn-info rounded-6"
             title="Add Sub-tasks"
           >
-            <i class="fas fa-plus"></i>
+            <i class="fas fa-plus me-2"></i>
+            Add sub-tasks
           </button>
           <button
             v-if="task.subTasks.length == 0"
-            class="btn btn-sm btn-outline-danger"
+            class="btn btn-sm btn-danger rounded-6"
             title="Delete Task"
           >
             <i class="far fa-trash-alt me-2"></i> Delete Task
@@ -84,9 +89,9 @@
           </p>
 
           <!-- sub-task action center -->
-          <div class="action-center d-flex justify-content-end my-3">
+          <div class="action-center d-flex justify-content-end">
             <button
-              class="btn btn-sm btn-danger btn-floating rounded-3 mt-0"
+              class="btn btn-sm btn-outline-dark btn-floating mt-0"
               title="Delete Task"
             >
               <i class="far fa-trash-alt"></i>

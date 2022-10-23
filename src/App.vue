@@ -1,9 +1,33 @@
 <template>
-  <TasksList />
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md">
+        <h1 class="display-4 text-center fw-bold mb-0">NUCAL - Task Board</h1>
+        <p class="text-center h4 fw-normal">
+          A coding challenge to create a single-page app using Vue.js & Vuex
+          <br />
+          <code>
+            <a
+              class="bgn btn-sm btn-secondary"
+              href="https://github.com/mdazlaanzubair/nucal_challenge"
+              target="_blank"
+              >SOURCE CODE HERE</a
+            >
+          </code>
+        </p>
+      </div>
+    </div>
+
+    <!-- ------------------- -->
+    <!-- TASK-LIST COMPONENT -->
+    <!-- ------------------- -->
+    <TasksList />
+  </div>
 </template>
 
 <script>
-import TasksList from "./components/Tasks_Components/TasksList.vue";
+import TasksList from "./components/TasksList.vue";
+
 export default {
   components: { TasksList },
   name: "App",
