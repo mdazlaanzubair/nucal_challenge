@@ -121,16 +121,14 @@ const state = {
       isDeleted: false, // true ? deleted
     },
   ],
+  error_msg: "",
 };
 
 const getters = {
   // getting tasks from application state
+  // filtering out all the tasks that are deleted
   tasksList: (state) => {
-    // holding fetched tasks data in sort variable
-    let sortedTasks = state.tasks;
-
-    // first filtering out all the tasks that are deleted
-    sortedTasks = sortedTasks.filter((task) => {
+    let filteredTasks = state.tasks.filter((task) => {
       // checking if "isDeleted" state of the task is true or otherwise
       if (task.isDeleted == false) {
         // checking if task has sub-tasks or otherwise
@@ -149,9 +147,20 @@ const getters = {
       }
     });
 
+    // returning tasksList after filtering
+    return filteredTasks;
+  },
+};
+
+const actions = {
+  // action to mutate the "taskList" state order on priority basis
+  sortTasksList({ commit }) {
+    // setting filtered task in new variable
+    let sortedTasks = this.getters.tasksList;
+
     // performing sort on whole array of objects
     sortedTasks.sort((task_a, task_b) => {
-      // performing sort on nest tasks of first task element i.e. "task_a"
+      // performing sort on sub-tasks of task element i.e. "task_a"
       if (task_a.subTasks.length > 0) {
         task_a.subTasks = task_a.subTasks.sort((subTask_a, subTask_b) => {
           if (subTask_a.level < subTask_b.level) return 1;
@@ -159,7 +168,8 @@ const getters = {
           else return 0;
         });
       }
-      // performing sort on nest tasks of second task element i.e. "task_b"
+
+      // performing sort on sub-tasks of task element i.e. "task_b"
       if (task_b.subTasks.length > 0) {
         task_b.subTasks = task_b.subTasks.sort((subTask_a, subTask_b) => {
           if (subTask_a.level > subTask_b.level) return 1;
@@ -168,19 +178,51 @@ const getters = {
         });
       }
 
-      // performing sort on main tasks elements
+      // performing sort on main tasks elements i.e. "task_a" & "task_b"
       if (task_a.level > task_b.level) return 1;
       if (task_a.level < task_b.level) return -1;
       else return 0;
     });
 
-    // returning tasksList after sort
-    return sortedTasks;
+    // committing changes to the state via mutation i.e. ""
+    commit("prioritizeTasks", sortedTasks);
+  },
+
+  // action to mutate the "taskList" state by adding a new task in it
+  addTask({ commit }, newlyCreatedTask) {
+    commit("newTask", newlyCreatedTask);
+  },
+
+  // action to mutate the "taskList" state by deleting a task from it
+  deleteTask({ commit }, taskIDs) {
+    // taskIDs[0] = main-task ID
+    // taskIDs[1] = sub-task ID
+    commit("delTask", taskIDs);
   },
 };
 
-const actions = {};
-
-const mutations = {};
+const mutations = {
+  prioritizeTasks: (state, sortedTasks) => (state.tasks = sortedTasks),
+  newTask: (state, newlyCreatedTask) => state.tasks.unshift(newlyCreatedTask),
+  delTask: (state, taskIDs) =>
+    (state.tasks = state.tasks.filter((task) => {
+      // if taskIDs[1] === 0 - main task will be deleted
+      if (taskIDs[1] === 0) {
+        if (task.id !== taskIDs[0]) {
+          return task;
+        }
+      } else {
+        // else find the taskIDs[0] and delete its nested sub-task
+        if (task.id === taskIDs[0]) {
+          task.subTasks = task.subTasks.filter((subTask) => {
+            if (subTask.id !== taskIDs[1]) {
+              return subTask;
+            }
+          });
+        }
+        return task;
+      }
+    })),
+};
 
 export default { state, getters, actions, mutations };

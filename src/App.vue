@@ -18,18 +18,25 @@
       </div>
     </div>
 
-    <!-- ------------------- -->
-    <!-- TASK-LIST COMPONENT -->
-    <!-- ------------------- -->
-    <TasksList />
+    <!-- ------------ -->
+    <!-- MAIN SECTION -->
+    <!-- ------------ -->
+    <div class="row justify-content-center my-3">
+      <!-- FORM COMPONENT -->
+      <AddTaskForm />
+
+      <!-- TASK-LIST COMPONENT -->
+      <TasksList />
+    </div>
   </div>
 </template>
 
 <script>
 import TasksList from "./components/TasksList.vue";
+import AddTaskForm from "./components/AddTaskForm.vue";
 
 export default {
-  components: { TasksList },
+  components: { TasksList, AddTaskForm },
   name: "App",
 };
 </script>
