@@ -2,27 +2,30 @@
   <div class="row justify-content-center my-3">
     <div class="col-md-">
       <div class="task-list-header">
-        <h3>OPEN TASK LIST</h3>
+        <h3>TASK LIST</h3>
+
+        <!-- divider -->
+        <hr class="hr" />
 
         <!-- filtration and actions -->
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="filters">
-            <span class="fw-bold">Filters</span>
+        <div class="row justify-content-center mb-4">
+          <!-- FILTERS COMPONENT -->
+          <div class="col-md">
+            <TaskListFilters />
           </div>
-
-          <!-- FORM COMPONENT -->
-          <AddTaskForm />
+          <div class="col-md-2">
+            <!-- FORM COMPONENT -->
+            <AddTaskForm />
+          </div>
         </div>
       </div>
-
-      <!-- divider -->
-      <hr class="hr mb-4" />
 
       <!-- ---------------- -->
       <!-- tasks section -->
       <!-- ---------------- -->
       <div
-        class="note note-light shadow mb-5"
+        class="note bg-light shadow mb-5"
+        :class="task.state ? 'note-success' : 'note-primary'"
         v-for="task in tasksList"
         :key="task.id"
       >
@@ -54,6 +57,8 @@
               v-if="task.subTasks.length < 4"
               class="btn btn-sm btn-primary btn-floating mx-2"
               title="Add Sub-tasks"
+              data-mdb-toggle="modal"
+              data-mdb-target="#addSubTask"
             >
               <i class="fas fa-plus"></i>
             </button>
@@ -83,7 +88,8 @@
         <!-- ---------------- -->
         <div
           v-show="task.subTasks.length > 0"
-          class="ms-2 note note-secondary bg-light my-4"
+          class="ms-2 note my-4"
+          :class="subTask.state ? 'note-success' : 'note-primary'"
           v-for="subTask in task.subTasks"
           :key="subTask.id"
         >
@@ -144,10 +150,11 @@
 
 <script>
 import AddTaskForm from "./AddTaskForm.vue";
+import TaskListFilters from "./TaskListFilters.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: { AddTaskForm },
+  components: { AddTaskForm, TaskListFilters },
   methods: {
     // vuex actions
     ...mapActions(["sortTasksList", "deleteTask"]),

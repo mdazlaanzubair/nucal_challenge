@@ -2,7 +2,7 @@
   <!-- Button trigger modal -->
   <button
     type="button"
-    class="btn btn-primary btn-sm btn-rounded"
+    class="btn btn-primary btn-block btn-sm btn-rounded me-3"
     data-mdb-toggle="modal"
     data-mdb-target="#addNewTask"
   >
