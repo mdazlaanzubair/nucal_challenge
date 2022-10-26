@@ -1,107 +1,139 @@
 <template>
-  <div class="col-md-4">
-    <form class="card px-4 py-3 shadow bg-light" @submit="submitNewTask">
-      <div class="form-group">
-        <h4 class="text-center mt-3">TASK BOARD</h4>
+  <!-- Button trigger modal -->
+  <button
+    type="button"
+    class="btn btn-primary btn-sm btn-rounded"
+    data-mdb-toggle="modal"
+    data-mdb-target="#addNewTask"
+  >
+    <i class="fas fa-plus me-2"></i>
+    Add new task
+  </button>
+  <div
+    class="modal fade"
+    id="addNewTask"
+    tabindex="-1"
+    aria-labelledby="addNewTaskLabel"
+    aria-hidden="true"
+  >
+    <form @submit="submitNewTask">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Task</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-mdb-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <h4 class="text-center mt-3"></h4>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label fw-bold" for="name"
+                >Task Title <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                v-model="name"
+                class="form-control bg-light"
+                placeholder="What's next..?"
+                autocomplete="auto"
+                minlength="3"
+                maxlength="25"
+                autofocus
+                required
+              />
+              <!-- error msg display -->
+              <small
+                class="text-danger fw-bold mb-3 d-block"
+                v-if="errors.name !== ''"
+                >{{ errors.name }}</small
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label fw-bold d-block" for="level"
+                >Task Priority <span class="text-danger">*</span></label
+              >
+              <small
+                class="text-danger fw-bold mb-3 d-block"
+                v-if="errors.level !== ''"
+                >{{ errors.level }}</small
+              >
+
+              <!-- Blocker Level -->
+              <div class="form-check small">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="level"
+                  v-model="level"
+                  id="blocker"
+                  value="1"
+                  required
+                />
+                <label class="form-check-label" for="blocker"
+                  >Blocker Level</label
+                >
+              </div>
+
+              <!-- Critical Level -->
+              <div class="form-check small">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="level"
+                  v-model="level"
+                  id="critical"
+                  value="2"
+                />
+                <label class="form-check-label" for="critical"
+                  >Critical Level</label
+                >
+              </div>
+
+              <!-- High Level -->
+              <div class="form-check small">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="level"
+                  v-model="level"
+                  id="high"
+                  value="3"
+                />
+                <label class="form-check-label" for="high">High Level</label>
+              </div>
+
+              <!-- Low Level -->
+              <div class="form-check small">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="level"
+                  v-model="level"
+                  id="low"
+                  value="4"
+                />
+                <label class="form-check-label" for="low">Low Level</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block">
+              Add Task
+            </button>
+          </div>
+        </div>
       </div>
-
-      <!-- divider -->
-      <hr class="hr" />
-
-      <div class="form-group mb-3">
-        <label class="form-label fw-bold" for="name"
-          >Task Title <span class="text-danger">*</span></label
-        >
-        <input
-          type="text"
-          id="name"
-          name="name"
-          v-model="name"
-          class="form-control bg-light"
-          placeholder="What's next..?"
-          autocomplete="auto"
-          minlength="3"
-          maxlength="25"
-          autofocus
-          required
-        />
-        <!-- error msg display -->
-        <small
-          class="text-danger fw-bold mb-3 d-block"
-          v-if="errors.name !== ''"
-          >{{ errors.name }}</small
-        >
-      </div>
-
-      <div class="form-group">
-        <label class="form-label fw-bold d-block" for="level"
-          >Task Priority <span class="text-danger">*</span></label
-        >
-        <small
-          class="text-danger fw-bold mb-3 d-block"
-          v-if="errors.level !== ''"
-          >{{ errors.level }}</small
-        >
-
-        <!-- Blocker Level -->
-        <div class="form-check small">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="level"
-            v-model="level"
-            id="blocker"
-            value="1"
-            required
-          />
-          <label class="form-check-label" for="blocker">Blocker Level</label>
-        </div>
-
-        <!-- Critical Level -->
-        <div class="form-check small">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="level"
-            v-model="level"
-            id="critical"
-            value="2"
-          />
-          <label class="form-check-label" for="critical">Critical Level</label>
-        </div>
-
-        <!-- High Level -->
-        <div class="form-check small">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="level"
-            v-model="level"
-            id="high"
-            value="3"
-          />
-          <label class="form-check-label" for="high">High Level</label>
-        </div>
-
-        <!-- Low Level -->
-        <div class="form-check small">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="level"
-            v-model="level"
-            id="low"
-            value="4"
-          />
-          <label class="form-check-label" for="low">Low Level</label>
-        </div>
-      </div>
-
-      <!-- divider -->
-      <hr class="hr" />
-
-      <!-- Submit button -->
-      <button type="submit" class="btn btn-success btn-block">Add Task</button>
     </form>
   </div>
 </template>
