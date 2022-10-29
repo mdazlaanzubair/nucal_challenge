@@ -5,7 +5,7 @@
   <!-- MAIN SECTION -->
   <div class="container">
     <!-- TASK-LIST COMPONENT -->
-    <TasksList />
+    <Main />
   </div>
 
   <!-- FOOTER SECTION -->
@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import TasksList from "./components/TasksList.vue";
 import Header from "./components/HeaderSection.vue";
+import Main from "./components/MainComponent.vue";
 import Footer from "./components/FooterSection.vue";
 
 export default {
-  components: { Header, TasksList, Footer },
+  components: { Header, Main, Footer },
   name: "App",
 };
 </script>
