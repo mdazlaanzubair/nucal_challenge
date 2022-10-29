@@ -1,18 +1,23 @@
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      filter: "none",
-      sort: "none",
+      filter: "all",
+      sort: "latest",
     };
   },
   methods: {
+    // vuex actions
+    ...mapActions(["prioritize", "filterTasks"]),
+
     filterOut(e) {
-      console.log(e.target.value);
+      this.filterTasks(e.target.value);
     },
 
     sortOut(e) {
-      console.log(e.target.value);
+      this.prioritize(e.target.value);
     },
   },
 };
@@ -20,31 +25,32 @@ export default {
 
 <template>
   <div class="row justify-content-end mb-3">
-    <div class="col-md">
+    <div class="col-md px-4">
+      <strong class="mx-2">Filter out:</strong>
+
       <select
-        class="form-select-sm mx-3"
+        class="form-select-sm"
         v-model="filter"
         v-on:change="filterOut($event)"
       >
-        <option value="none">Filter Tasks</option>
         <option value="all">All</option>
-        <option value="true">Completed</option>
-        <option value="false">Incomplete</option>
+        <option value="active">Active</option>
+        <option value="completed">Completed</option>
       </select>
 
+      <strong class="mx-2">Sort by:</strong>
       <select
-        class="form-select-sm mx-3"
+        class="form-select-sm"
         v-model="sort"
         v-on:change="sortOut($event)"
       >
-        <option value="none">Sort Tasks</option>
-        <optgroup label="Prioritize">
-          <option value="high-Low">High to Low</option>
-          <option value="low-high">Low to High</option>
-        </optgroup>
         <optgroup label="Order by">
           <option value="latest">Latest First</option>
           <option value="oldest">Oldest First</option>
+        </optgroup>
+        <optgroup label="Prioritize">
+          <option value="high-low">High to Low</option>
+          <option value="low-high">Low to High</option>
         </optgroup>
       </select>
     </div>

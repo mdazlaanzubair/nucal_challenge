@@ -4,7 +4,6 @@
 
   <!-- MAIN SECTION -->
   <div class="container">
-    <!-- TASK-LIST COMPONENT -->
     <Main />
   </div>
 
@@ -14,7 +13,7 @@
 
 <script>
 import Header from "./components/HeaderSection.vue";
-import Main from "./components/MainComponent.vue";
+import Main from "./components/MainSection.vue";
 import Footer from "./components/FooterSection.vue";
 
 export default {

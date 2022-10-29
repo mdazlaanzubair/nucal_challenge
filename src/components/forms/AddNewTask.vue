@@ -17,7 +17,7 @@ export default {
     // form validation function
     validateForm(title, desc, priority) {
       // validating title of the task
-      if (title.length == 0)
+      if (title.length == 0 || title == "")
         // error, if description is not submitted
         return (this.error_msg = "Title is required.");
       if (title.length <= 5)
@@ -28,21 +28,19 @@ export default {
         return (this.error_msg = "Title must not be more than 25 characters.");
 
       // checking uniqueness of the title from tasks already stored in centralized store
-      const taskAlreadyExist = this.$store.getters.setFilteredTasks.find(
-        (task) => {
-          // if title already in the list return true
-          if (task.title === title) {
-            return true;
-          }
-
-          // else return false
-          return false;
+      const taskAlreadyExist = this.$store.getters.filteredTasks.find((task) => {
+        // if title already in the list return true
+        if (task.title === title) {
+          return true;
         }
-      );
+
+        // else return false
+        return false;
+      });
       if (taskAlreadyExist) return (this.error_msg = "Title must be unique.");
 
       // validating description of the task
-      if (desc.length == 0)
+      if (desc.length == 0 || desc == "")
         // error, if description is not submitted
         return (this.error_msg = "Description is required.");
       if (desc.length < 6)
@@ -59,6 +57,9 @@ export default {
         return (this.error_msg = "Task must have a priority.");
       if (this.priority.length < 1 || this.priority.length > 4)
         return (this.error_msg = "Invalid priority input.");
+
+      // if no error just return empty error_msg
+      return (this.error_msg = "");
     },
 
     // submit function for creating "new_task"
@@ -79,13 +80,16 @@ export default {
         timestamp: Date.now(),
       };
 
-      // calling "addTask" action from store
-      this.addTask(newTask);
+      // execute when there is no error
+      if (this.error_msg === "") {
+        // calling "addTask" action from store
+        this.addTask(newTask);
 
-      // making form empty again
-      this.title = "";
-      this.desc = "";
-      this.priority = "";
+        // making form empty again
+        this.title = "";
+        this.desc = "";
+        this.priority = "";
+      }
     },
   },
 };
