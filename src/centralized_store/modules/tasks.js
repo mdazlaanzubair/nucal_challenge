@@ -40,7 +40,7 @@ const state = {
       id: 5,
       title: "Lorem Ipsum",
       desc: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-      priority: 5, // Blocker = 1 > Critical = 2 > High = 3 > Low = 4
+      priority: 4, // Blocker = 1 > Critical = 2 > High = 3 > Low = 4
       isCompleted: false, // true ? completed : incomplete
       timestamp: 1666510185147,
       isDeleted: false, // true ? deleted
@@ -85,6 +85,12 @@ const actions = {
     commit("taskCreated", newTask);
   },
 
+  // action to mutate the "taskList" state by adding a new task in it
+  editTask({ commit }, updateTask) {
+    // mutating the state by "taskUpdated"
+    commit("taskUpdated", updateTask);
+  },
+
   // action to mutate the "status" of "taskList" state
   isCompleted({ commit }, taskID) {
     // mutating the state by "isChecked"
@@ -101,12 +107,31 @@ const actions = {
 };
 
 const mutations = {
+  // mutation that adds new task item in tasks array
   taskCreated: (state, new_task) => state.tasksList.unshift(new_task),
+
+  // mutation that edits task item in tasks array
+  taskUpdated: (state, updateTask) =>
+    (state.tasksList = state.tasksList.map((task) => {
+      if (task.id === updateTask.id) {
+        task.title = updateTask.title;
+        task.desc = updateTask.desc;
+        task.priority = updateTask.priority;
+        task.isCompleted = updateTask.isCompleted;
+        task.isDeleted = updateTask.isDeleted;
+        task.timestamp = updateTask.timestamp;
+      }
+      return task;
+    })),
+
+  // mutation that filters task item in tasks array
   isFiltered: (state, filterType) => (state.filter = filterType),
+
+  // mutation that sorts task item in tasks array
   sortTasks: (state, orderType) =>
     (state.tasksList = state.tasksList.sort((task_a, task_b) => {
       // prioritizing based on orderType i.e. "high to low" , "low to high" , "latest first" & "oldest first"
-      if (orderType == "high-low") {
+      if (orderType === "high-low") {
         // "task_a" is grater than "task_b" return 1
         if (task_a.priority > task_b.priority) return 1;
 
@@ -115,7 +140,7 @@ const mutations = {
         else return 0;
       }
 
-      if (orderType == "low-high") {
+      if (orderType === "low-high") {
         // "task_a" is less than "task_b" return 1
         if (task_a.priority < task_b.priority) return 1;
         // "task_a" is less than "task_b" return -1
@@ -123,22 +148,24 @@ const mutations = {
         else return 0;
       }
 
-      if (orderType == "oldest") {
+      if (orderType === "oldest") {
         // "task_a" is less than "task_b" return 1
-        if (task_a.timestamp < task_b.timestamp) return 1;
+        if (new Date(task_a.timestamp) > new Date(task_b.timestamp)) return 1;
         // "task_a" is less than "task_b" return -1
-        if (task_a.timestamp > task_b.timestamp) return -1;
+        if (new Date(task_a.timestamp) < new Date(task_b.timestamp)) return -1;
         else return 0;
       }
 
-      if (orderType == "latest") {
+      if (orderType === "latest") {
         // "task_a" is less than "task_b" return 1
-        if (task_a.timestamp > task_b.timestamp) return 1;
+        if (new Date(task_a.timestamp) < new Date(task_b.timestamp)) return 1;
         // "task_a" is less than "task_b" return -1
-        if (task_a.timestamp < task_b.timestamp) return -1;
+        if (new Date(task_a.timestamp) > new Date(task_b.timestamp)) return -1;
         else return 0;
       }
     })),
+
+  // mutation that changes completed status of task item
   isChecked: (state, taskID) =>
     // filtering out task by id and update its "isCompleted" status
     state.tasksList.filter((task) => {
@@ -148,6 +175,7 @@ const mutations = {
       return task;
     }),
 
+  // mutation that changes deleted status of task item
   // deleting out task, finding by update its "isDeleted" status
   isRemoved: (state, taskID) =>
     (state.tasksList = state.tasksList.filter((task) => {

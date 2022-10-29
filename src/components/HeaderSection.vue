@@ -12,6 +12,9 @@
             target="_blank"
             >SOURCE CODE HERE</a
           >
+          <h3>
+            {{ date }}
+          </h3>
         </code>
       </p>
     </div>

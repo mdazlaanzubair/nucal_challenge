@@ -47,7 +47,7 @@ export default {
         // error, if description is less than 6 characters
         return (this.error_msg =
           "Description must be at least 6 characters long.");
-      if (desc.length > 25)
+      if (desc.length > 150)
         // error, if description is greater than 25 characters
         return (this.error_msg =
           "Description must not be more than 150 characters.");

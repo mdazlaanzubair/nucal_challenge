@@ -44,9 +44,9 @@ export default {
         v-model="sort"
         v-on:change="sortOut($event)"
       >
-        <optgroup label="Order by">
-          <option value="latest">Latest First</option>
-          <option value="oldest">Oldest First</option>
+        <optgroup label="Order by Timestamp">
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
         </optgroup>
         <optgroup label="Prioritize">
           <option value="high-low">High to Low</option>
